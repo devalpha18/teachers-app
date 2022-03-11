@@ -862,6 +862,13 @@ const Form: React.FC = () => {
       if (contentTypeIndex === 1) updateTraining();
       if (contentTypeIndex === 2) updateTest();
     }
+
+    setFirstSectionText('');
+    setFirstSectionFile(null);
+    setSecondSectionText('');
+    setSecondSectionFile(null);
+    setThirdSectionText('');
+    setThirdSectionFile(null);
   };
 
   const handleDelete = () => {

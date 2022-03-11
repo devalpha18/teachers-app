@@ -91,7 +91,7 @@ const Select: React.FC<SelectProps> = props => {
   };
 
   return (
-    <SelectContainer onMouseLeave={() => setOptionsVisible(false)}>
+    <SelectContainer>
       <StyledSelect onClick={() => setOptionsVisible(!optionsVisible)}>
         <span>{selectionData[selectedIndex]}</span>
         <GoChevronDown />
