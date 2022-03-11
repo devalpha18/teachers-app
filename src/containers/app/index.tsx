@@ -3,6 +3,8 @@ import GlobalStyle from '../../styles/global';
 import { StyledContainer } from './styled';
 import Form from '../form';
 
+import Toastr from '../../components/toastr';
+
 const App: React.FC = () => {
   return (
     <>
@@ -10,6 +12,7 @@ const App: React.FC = () => {
       <StyledContainer>
         <Form />
       </StyledContainer>
+      <Toastr />
     </>
   );
 };

@@ -45,6 +45,8 @@ const StyledOptions = styled.div`
   padding: 8px;
   grid-gap: 8px;
   z-index: 5;
+  height: 350px;
+  overflow-y: scroll;
 `;
 
 interface StyledOptionProps {
@@ -54,8 +56,8 @@ interface StyledOptionProps {
 const StyledOption = styled.div<StyledOptionProps>`
   background: #ffffff;
   border-radius: 3px;
-  width: ${({ width }) => (width ? `${width}px` : '213px')};
-  height: 35px;
+  width: ${({ width }) => (width ? `${width}px` : '250px')};
+  min-height: 35px;
   display: flex;
   align-items: center;
   padding: 0 16px;

@@ -60,13 +60,18 @@ const PreviewFile = styled.div`
   }
 `;
 
-const DragDropFile: React.FC = () => {
-  const [file, setFile] = useState<null | File>(null);
+interface DragDropFileProps {
+  selectedFile: File | null;
+  handleSelectFile: Function;
+}
+
+const DragDropFile: React.FC<DragDropFileProps> = props => {
+  const { selectedFile, handleSelectFile } = props;
 
   return (
     <DragDropFileContainer>
-      <StyledInput type="file" onChange={e => setFile(e.target.files![0])} />
-      {file === null ? (
+      <StyledInput type="file" onChange={e => handleSelectFile(e.target.files![0])} />
+      {selectedFile === null || selectedFile === undefined ? (
         <PreviewFile>
           Arrastra o&nbsp;<a>selecciona</a>
         </PreviewFile>
@@ -74,11 +79,11 @@ const DragDropFile: React.FC = () => {
         <PreviewFile>
           <div>
             <p>Name:</p>
-            <span>{file.name}</span>
+            <span>{selectedFile.name ? selectedFile.name : ''}</span>
             <p>Type:</p>
-            <span>{file.type}</span>
+            <span>{selectedFile.type ? selectedFile.type : ''}</span>
             <p>Last Modified Date:</p>
-            <span>{file.lastModified}</span>
+            <span>{selectedFile.lastModified ? selectedFile.lastModified : ''}</span>
           </div>
         </PreviewFile>
       )}
