@@ -25,10 +25,10 @@ const SwitchContainer = styled.div`
   label:after {
     content: '';
     position: absolute;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     left: 2px;
-    top: calc(50% - 28px / 2 + 0px);
+    top: 2px;
     background: #333333;
     border-radius: 100px;
     transition: 0.3s;

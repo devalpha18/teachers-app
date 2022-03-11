@@ -23,13 +23,13 @@ const contentTypes: string[] = ['Lección', 'Entrenamiento', 'Prueba'];
 const sectionTypes: string[] = ['Texto', 'Imagen', 'Video'];
 const trainingTypes: string[] = ['Agregar', 'Crear'];
 const testTypes: string[] = ['Agregar', 'Crear'];
+const branches: string[] = ['Secondary', 'Sexto', 'CuartoB', 'PrimeroB', 'SegundoB', 'TerceroB', 'TestUser', 'CuartoB', 'Primary', 'Cuarto Básico'];
 
 const Form: React.FC = () => {
   const firebaseApiService = new FirebaseApiService();
   const [allCourses, setAllCourses] = useState<any[]>([]);
   const [subjects, setSubjects] = useState<any[]>([]);
   const [courses, setCourses] = useState<string[]>([]);
-  const [branches, setBranches] = useState<string[]>([]);
   const [units, setUnits] = useState<string[]>([]);
   const [entrenamientos, setEntrenamientos] = useState<any[]>([]);
   const [trainings, setTrainings] = useState<string[]>([]);
@@ -97,10 +97,28 @@ const Form: React.FC = () => {
     setIsEditMode(switchValue);
   };
 
+  const handleSelectBranch = async (selectedIndex: number) => {
+    setInitialState();
+    setBranchIndex(selectedIndex);
+
+    const t_allCourses = await firebaseApiService.getAllCourses(branches[selectedIndex]);
+    setAllCourses(t_allCourses);
+    setCourses(t_allCourses.map(item => item.data.courseName));
+    const t_subjects = await firebaseApiService.getSubjectsByCourse(t_allCourses[0].id as string);
+    setSubjects(t_subjects);
+    setUnits(t_subjects.map(item => item.data.subjectName));
+    const t_trainings = await firebaseApiService.getTrainingsByCourse(t_allCourses[0].id as string, t_subjects[0].id as string);
+    setEntrenamientos(t_trainings);
+    setTrainings(t_trainings.map(item => item.data.title));
+
+    const t_tests = await firebaseApiService.getTestsByCourse(t_allCourses[0].id as string, t_subjects[0].id as string);
+    setPruebas(t_tests);
+    setTests(t_tests.map(item => item.data.title));
+  };
+
   const handleSelectCourse = async (selectedIndex: number) => {
     setInitialState();
     setCourseIndex(selectedIndex);
-    setBranchIndex(selectedIndex);
 
     const t_subjects = await firebaseApiService.getSubjectsByCourse(allCourses[selectedIndex].id as string);
     setSubjects(t_subjects);
@@ -383,10 +401,9 @@ const Form: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const t_allCourses = await firebaseApiService.getAllCourses();
+      const t_allCourses = await firebaseApiService.getAllCourses(branches[0]);
       setAllCourses(t_allCourses);
-      setCourses(t_allCourses.map(item => item.data.level));
-      setBranches(t_allCourses.map(item => item.data.courseName));
+      setCourses(t_allCourses.map(item => item.data.courseName));
       const t_subjects = await firebaseApiService.getSubjectsByCourse(t_allCourses[0].id as string);
       setSubjects(t_subjects);
       setUnits(t_subjects.map(item => item.data.subjectName));
@@ -888,11 +905,11 @@ const Form: React.FC = () => {
       </FormGroupV>
       <FormGroupV>
         <FormLabel>Curso</FormLabel>
-        <Select selectionData={courses} onSelect={handleSelectCourse} selectedIndex={courseIndex} />
+        <Select selectionData={branches} onSelect={handleSelectBranch} selectedIndex={branchIndex} />
       </FormGroupV>
       <FormGroupV>
         <FormLabel>Ramo</FormLabel>
-        <Select selectionData={branches} onSelect={handleSelectCourse} selectedIndex={branchIndex} />
+        <Select selectionData={courses} onSelect={handleSelectCourse} selectedIndex={courseIndex} />
       </FormGroupV>
       {!isEditMode && contentTypeIndex === 0 && (
         <FormGroupV>

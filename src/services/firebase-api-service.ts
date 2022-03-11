@@ -1,4 +1,4 @@
-import { getFirestore, Firestore, collection, query, addDoc, updateDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, Firestore, collection, query, addDoc, updateDoc, getDocs, doc, deleteDoc, where } from 'firebase/firestore';
 import firebaseApp from '../firebase';
 
 class FirebaseApiService {
@@ -8,8 +8,8 @@ class FirebaseApiService {
     this._db = getFirestore(firebaseApp);
   }
 
-  public async getAllCourses() {
-    const q = query(collection(this._db, 'Courses'));
+  public async getAllCourses(level: string) {
+    const q = query(collection(this._db, 'Courses'), where('level', '==', `${level}`));
     const querySnapshot = await getDocs(q);
     let courses: any[] = [];
     querySnapshot.forEach(doc => {
